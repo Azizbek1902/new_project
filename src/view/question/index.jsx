@@ -69,8 +69,6 @@ const Testlar = () => {
     axios
       .post(`${Config.URL}/questions/filter`, sendDate)
       .then((res) => {
-        console.log(res, "ddddddddd");
-        console.log(sendDate, "data");
         setBaza(res?.data?.docs);
         setPageLenght(res?.data?.totalPages);
       })
@@ -185,6 +183,22 @@ const Testlar = () => {
   }
   const handlePage = (num) => {
     setPageNum(num);
+    let data = {
+      category: sendDate.category,
+      subCategory: sendDate.subCategory,
+      limit: sendDate.limit,
+      page: num,
+    };
+    axios
+      .post(`${Config.URL}/questions/filter`, data)
+      .then((res) => {
+        setBaza(res?.data?.docs);
+        setPageLenght(res?.data?.totalPages);
+      })
+      .catch((err) => {
+        alert("Tizimda hatolik");
+        console.log(err);
+      });
   };
   const handleNext = () => {
     if (pageLenght > pageNum) {

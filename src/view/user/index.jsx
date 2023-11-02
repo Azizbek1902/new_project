@@ -51,6 +51,25 @@ const User = () => {
   }
   const handlePage = (num) => {
     setPageNum(num);
+    let sendData = {
+      category: data.category,
+      subCategory: data.subCategory,
+      limit: data.limit,
+      page: num,
+    };
+    axios
+      .post(`${Config.URL}/users/phone`, sendData)
+      .then((res) => {
+        if (res.data.length !== 0) {
+          setUser(res?.data?.docs);
+          setPageLenght(res?.data?.totalPages);
+        } else {
+          alert("Bunday foydalanuvchi topilmadi");
+        }
+      })
+      .catch((err) => {
+        alert("Tizimda hatolik");
+      });
   };
   const handleNext = () => {
     if (pageLenght > pageNum) {
