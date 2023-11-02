@@ -357,7 +357,7 @@ const Testlar = () => {
                 return (
                   <tr key={index}>
                     <td scope="row">
-                      {index + 1}
+                      {pageNum > 1 ? <>{index+1+ pageNum*10}</> : <>{index + 1}</>}
                       {item.photo ? (
                         <img
                           className="img_ich"
