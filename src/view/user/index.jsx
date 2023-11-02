@@ -196,7 +196,7 @@ const User = () => {
         )}
         {user.map((item, index) => {
           return (
-            <div className="border rounded cardW p-4 col-md-3">
+            <div className="border rounded cardW p-4 col-md-3" key={index}>
               <h5>
                 F.I.SH : <b>{item.username}</b>
               </h5>
