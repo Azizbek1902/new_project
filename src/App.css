@@ -1,0 +1,108 @@
+* {
+  font-family: sans-serif;
+}
+
+.left h3 {
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px 30px;
+}
+
+svg {
+  font-size: 35px;
+  cursor: pointer;
+}
+
+.cat_con {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: #222222e2;
+  width: 100vw;
+  height: 100vh;
+}
+
+.cat_conten {
+  background: #efefef;
+  width: 310px;
+  padding-right: 30px;
+  height: 250px;
+  margin-top: 200px;
+}
+
+.user_search {
+  width: 600px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.search_item {
+  text-align: center;
+}
+
+.questions_search {
+  width: 600px;
+  margin: 0 auto;
+}
+
+.ico {
+  padding-right: 200px;
+}
+
+.res_question {
+  width: 960px;
+  margin: 0 auto;
+}
+
+.pht_wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  background-color: #4b4b4b8f;
+
+}
+
+.images_mod {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  background-color: #ffffffcf;
+  text-align: center;
+}
+
+
+.asd {
+  position: relative;
+}
+
+
+.mod_photo {
+  width: 400px;
+  margin: 0 auto;
+  border: 1px solid rgb(171, 171, 171);
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 15%;
+  background-color: #efefef;
+}
+
+.img_ich {
+  cursor: pointer;
+}
+
+.img_con img {
+  width: 1024px;
+  height: 600px;
+  margin: 0 300px;
+}
+.cardW{
+  width: 23% !important;
+}
