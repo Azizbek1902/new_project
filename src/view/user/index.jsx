@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment/moment";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 const User = () => {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ const User = () => {
   const [momentDate, setMomentDate] = useState(moment(new Date()));
   const [modalData, setModalData] = useState({});
   const [startDate, setStartDate] = useState(new Date());
+  const [docs, setDocs] = useState(0);
+  const [openModal, setOpenModal] = useState("d-none");
   const [data, setData] = useState({
     phone: "",
     limit: 20,
@@ -32,6 +35,7 @@ const User = () => {
       .then((res) => {
         if (res.data.length !== 0) {
           setUser(res?.data?.docs);
+          setDocs(res?.data?.totalDocs);
           setPageLenght(res?.data?.totalPages);
         } else {
           alert("Bunday foydalanuvchi topilmadi");
@@ -44,6 +48,7 @@ const User = () => {
 
   const changeUser = (item, check) => {
     setModalData(item);
+    changeModal("d-inline cat_con d-flex justify-content-center");
   };
   let paginationArray = [];
   for (let i = 1; i <= pageLenght; i++) {
@@ -63,6 +68,7 @@ const User = () => {
         if (res.data.length !== 0) {
           setUser(res?.data?.docs);
           setPageLenght(res?.data?.totalPages);
+          setDocs(res?.data?.totalDocs);
         } else {
           alert("Bunday foydalanuvchi topilmadi");
         }
@@ -102,6 +108,10 @@ const User = () => {
       .catch((err) => {
         alert("Xatolik yuz berdi");
       });
+    setOpenModal("d-none");
+  };
+  const changeModal = (stle) => {
+    setOpenModal(stle);
   };
   return (
     <div className="my-5">
@@ -190,7 +200,7 @@ const User = () => {
       )}
       <div className="user row d-flex mx-2 gap-3 justify-content-center">
         {user.length !== 0 ? (
-          <h1 className="ps-5">Foydalanuvchilar soni : {user.length}</h1>
+          <h1 className="ps-5">Foydalanuvchilar soni : {docs}</h1>
         ) : (
           ""
         )}
@@ -225,8 +235,6 @@ const User = () => {
                 <button
                   onClick={() => changeUser(item, true)}
                   className="btn btn-primary mx-2"
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal"
                 >
                   Tahrirlash
                 </button>
@@ -235,7 +243,46 @@ const User = () => {
           );
         })}
       </div>
-      <div
+      <div className={openModal}>
+        <div className="modalUser">
+          <h1 onClick={() => changeModal("d-none")} className="closeBtn">
+            <AiOutlineCloseCircle className="text-danger" />
+          </h1>
+          <h1 className="modal-title fs-5" id="exampleModalLabel">
+            F.I.SH : <b>{modalData?.username}</b>
+          </h1>
+          <h5 className="mt-3">
+            Telefon raqami : <b>{modalData?.phone}</b>
+          </h5>
+          <h5 className="mt-3">
+            Manzil : <b>{modalData?.address}</b>
+          </h5>
+          <div className="form-check mt-3 mb-3 form-switch">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="flexSwitchCheckChecked"
+              checked={modalData.payment}
+              // {item.payment?"checked":""}
+            />
+            <label className="form-check-label" for="flexSwitchCheckChecked">
+              Botdan foydalanish ruxsati
+            </label>
+          </div>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => handleData(date)}
+          />
+          <button
+            type="button"
+            className="btn ms-3 btn-primary"
+            onClick={() => handleTahrirlash(modalData)}
+          >
+            Tahrirlash
+          </button>
+        </div>
+      </div>
+      {/* <div
         className="modal fade"
         id="exampleModal"
         tabindex="-1"
@@ -295,7 +342,7 @@ const User = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
