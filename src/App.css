@@ -16,6 +16,7 @@ svg {
 
 .cat_con {
   position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 1;
@@ -23,7 +24,20 @@ svg {
   width: 100vw;
   height: 100vh;
 }
-
+.modalUser{
+  position: relative;
+  padding: 35px 25px 25px 25px;
+  max-height: 330px;
+  border-radius: 10px;
+  width: 400px;
+  margin-top: 200px;
+  background-color: white;
+}
+.closeBtn{
+  position: absolute;
+  top: 0px;
+  right: 10px;
+}
 .cat_conten {
   background: #efefef;
   width: 310px;
