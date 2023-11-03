@@ -51,9 +51,8 @@ const User = () => {
       });
   };
 
-  const changeUser = (item, check) => {
+  const changeUser = (item) => {
     setModalData(item);
-    console.log(item, "dd");
     changeModal("d-inline cat_con d-flex justify-content-center");
   };
   let paginationArray = [];
@@ -261,7 +260,7 @@ const User = () => {
               </h5>
               <div className="mt-3 d-flex justify-content-center">
                 <button
-                  onClick={() => changeUser(item, true)}
+                  onClick={() => changeUser(item)}
                   className="btn btn-primary mx-2"
                 >
                   Tahrirlash
