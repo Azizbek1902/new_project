@@ -101,21 +101,20 @@ const User = () => {
     setMomentDate(moment(date).format("YYYY-MM-DD"));
   };
   const handleTahrirlash = (data) => {
+    setLoading(true);
     axios
       .put(`${Config.URL}/users/${data._id}`, {
         payment: data.active,
         endDate: momentDate,
       })
       .then((res) => {
-        if (data.active) {
-          alert("Foydalanuvchiga ruhsat berildi");
-        } else {
-          alert("Foydalanuvchiga cheklov qo'yildi");
-        }
         window.location.reload();
       })
       .catch((err) => {
         alert("Xatolik yuz berdi");
+      })
+      .finally(() => {
+        setLoading(false);
       });
     setOpenModal("d-none");
   };

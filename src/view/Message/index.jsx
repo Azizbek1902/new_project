@@ -19,7 +19,6 @@ function Message() {
     axios
       .post(`${Config.URL}/users/sendMessage`, data)
       .then((res) => {
-        alert("Habar jo'natildi");
         window.location.reload();
       })
       .catch((err) => {

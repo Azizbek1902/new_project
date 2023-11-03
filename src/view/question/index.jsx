@@ -101,32 +101,37 @@ const Testlar = () => {
   };
 
   const addTest = (e) => {
+    setLoading(true);
     axios
       .post(`${Config.URL}/questions/many`, {
         ...newData,
         questions: questions,
       })
-      .then((res) => {
-        alert("Testlar bazaga yuklandi");
-      })
+      .then((res) => {})
       .catch((err) => {
         alert("Testlar formati to'g'ri kemadi");
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   const DeleteQuestion = (id) => {
+    setLoading(true);
     axios
       .delete(`${Config.URL}/questions/${id}`, {
         ...newData,
         questions: questions,
       })
       .then((res) => {
-        alert("Ma'lumot o'chirildi");
         window.location.reload();
       })
       .catch((err) => {
         alert("Ma'lumot o'chirishda hatolik");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   const { register, handleSubmit } = useForm();
@@ -142,17 +147,20 @@ const Testlar = () => {
     setModal2("pht_wrap");
   };
   const onSubmit = async (data) => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("file", data.file[0]);
     axios
       .post(`${Config.URL}/questions/addPhoto/${pid}`, formData)
       .then((res) => {
-        alert("Image upload");
         window.location.reload();
       })
       .catch((err) => {
         alert("Eror not upload");
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -168,6 +176,7 @@ const Testlar = () => {
   };
 
   const DeleteImg = (id) => {
+    setLoading(true);
     if (window.confirm("Delete Image")) {
       axios
         .delete(`${Config.URL}/questions/deleteimg/${id}`)
@@ -176,6 +185,9 @@ const Testlar = () => {
           alert("Error not found");
           window.location.reload();
           console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     } else {
       alert("Error not found");
