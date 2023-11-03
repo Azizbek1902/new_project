@@ -16,6 +16,7 @@ const User = () => {
   const [modalData, setModalData] = useState({});
   const [startDate, setStartDate] = useState(new Date());
   const [docs, setDocs] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState("d-none");
   const [data, setData] = useState({
     phone: "",
@@ -29,6 +30,7 @@ const User = () => {
   };
 
   const SearchFunction = (e) => {
+    setLoading(true);
     e.preventDefault();
     axios
       .post(`${Config.URL}/users/phone`, data)
@@ -43,6 +45,9 @@ const User = () => {
       })
       .catch((err) => {
         alert("Tizimda hatolik");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -55,6 +60,7 @@ const User = () => {
     paginationArray.push(i);
   }
   const handlePage = (num) => {
+    setLoading(true);
     setPageNum(num);
     let sendData = {
       category: data.category,
@@ -75,6 +81,9 @@ const User = () => {
       })
       .catch((err) => {
         alert("Tizimda hatolik");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   const handleNext = () => {
@@ -113,6 +122,16 @@ const User = () => {
   const changeModal = (stle) => {
     setOpenModal(stle);
   };
+  if (loading) {
+    return (
+      <div
+        className="d-flex align-items-center justify-content-center"
+        style={{ height: "100vh" }}
+      >
+        <div class="loader"></div>
+      </div>
+    );
+  }
   return (
     <div className="my-5">
       <div className="nav mb-5 d-flex justify-content-around">
@@ -133,6 +152,12 @@ const User = () => {
           onClick={() => navigate("/test")}
         >
           Testlar
+        </div>
+        <div
+          className="menu_item btn btn-primary"
+          onClick={() => navigate("/message")}
+        >
+          Habar jo'natish
         </div>
       </div>
       <div className="user_search">
