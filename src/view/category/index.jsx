@@ -54,7 +54,6 @@ const Category = () => {
     axios
       .post(`${Config.URL}/categorys`, addData)
       .then((res) => {
-        alert("Yangi ma'lumot qo'shildi");
         window.location.reload();
       })
       .catch((err) => {
@@ -62,10 +61,11 @@ const Category = () => {
       })
       .finally(() => {
         setLoading(false);
-      }); 
+      });
   };
 
   const DeleteCategory = (id) => {
+    setLoading(true);
     if (window.confirm("Delete the item?")) {
       axios
         .delete(`${Config.URL}/categorys/${id}`, addData)
@@ -74,6 +74,9 @@ const Category = () => {
         })
         .catch((err) => {
           console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   };
