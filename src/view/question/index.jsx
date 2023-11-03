@@ -13,6 +13,7 @@ const Testlar = () => {
   const [questions, setQuestions] = useState([]);
   const [pageLenght, setPageLenght] = useState(0);
   const [pageNum, setPageNum] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [newData, setNewData] = useState({
     category: "",
     subCategory: "",
@@ -65,6 +66,7 @@ const Testlar = () => {
   }, []);
 
   const sendBack = (e) => {
+    setLoading(true);
     e.preventDefault();
     axios
       .post(`${Config.URL}/questions/filter`, sendDate)
@@ -75,6 +77,9 @@ const Testlar = () => {
       .catch((err) => {
         alert("Tizimda hatolik");
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -210,6 +215,15 @@ const Testlar = () => {
       setPageNum(pageNum - 1);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="d-flex align-items-center justify-content-center" style={{height: '100vh'}}>
+        <div class="loader"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="mt-5 asd">
       <div className={modal3}>
@@ -241,6 +255,12 @@ const Testlar = () => {
           onClick={() => navigate("/test")}
         >
           Testlar
+        </div>
+        <div
+          className="menu_item btn btn-primary"
+          onClick={() => navigate("/message")}
+        >
+          Habar jo'natish
         </div>
       </div>
       <div
