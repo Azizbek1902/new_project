@@ -53,6 +53,7 @@ const User = () => {
 
   const changeUser = (item, check) => {
     setModalData(item);
+    console.log(item, "dd");
     changeModal("d-inline cat_con d-flex justify-content-center");
   };
   let paginationArray = [];
@@ -255,6 +256,9 @@ const User = () => {
                   Botdan foydalanish ruxsati
                 </label>
               </div>
+              <h5>
+                Sana : <b>{item.endDate}</b>
+              </h5>
               <div className="mt-3 d-flex justify-content-center">
                 <button
                   onClick={() => changeUser(item, true)}
@@ -293,6 +297,9 @@ const User = () => {
               Botdan foydalanish ruxsati
             </label>
           </div>
+          <h5>
+            Sana : <b>{modalData.endDate}</b>
+          </h5>
           <DatePicker
             selected={startDate}
             onChange={(date) => handleData(date)}
