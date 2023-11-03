@@ -187,6 +187,7 @@ const Testlar = () => {
     paginationArray.push(i);
   }
   const handlePage = (num) => {
+    setLoading(true);
     setPageNum(num);
     let data = {
       category: sendDate.category,
@@ -203,6 +204,9 @@ const Testlar = () => {
       .catch((err) => {
         alert("Tizimda hatolik");
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   const handleNext = () => {
@@ -218,7 +222,10 @@ const Testlar = () => {
 
   if (loading) {
     return (
-      <div className="d-flex align-items-center justify-content-center" style={{height: '100vh'}}>
+      <div
+        className="d-flex align-items-center justify-content-center"
+        style={{ height: "100vh" }}
+      >
         <div class="loader"></div>
       </div>
     );
