@@ -6,6 +6,7 @@ import { AiOutlineCloseCircle, AiFillDelete } from "react-icons/ai";
 import { HiOutlineDocumentAdd } from "react-icons/hi";
 import * as XLSX from "xlsx";
 import { useForm } from "react-hook-form";
+import { CgMenu } from "react-icons/cg";
 const Testlar = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -14,6 +15,7 @@ const Testlar = () => {
   const [pageLenght, setPageLenght] = useState(0);
   const [pageNum, setPageNum] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [openNavbar, setOpenNavbar] = useState(false);
   const [newData, setNewData] = useState({
     category: "",
     subCategory: "",
@@ -146,6 +148,30 @@ const Testlar = () => {
     setPid(id);
     setModal2("pht_wrap");
   };
+  const handlePage = (num) => {
+    setLoading(true);
+    setPageNum(num);
+    let data = {
+      category: sendDate.category,
+      subCategory: sendDate.subCategory,
+      limit: sendDate.limit,
+      page: num,
+    };
+    axios
+      .post(`${Config.URL}/questions/filter`, data)
+      .then((res) => {
+        setBaza([...res?.data?.docs]);
+        // setBaza(res?.data?.docs);
+        setPageLenght(res?.data?.totalPages);
+      })
+      .catch((err) => {
+        alert("Tizimda hatolik");
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
   const onSubmit = async (data) => {
     setLoading(true);
     const formData = new FormData();
@@ -153,7 +179,23 @@ const Testlar = () => {
     axios
       .post(`${Config.URL}/questions/addPhoto/${pid}`, formData)
       .then((res) => {
-        window.location.reload();
+        changeModal2("d-none");
+        let senddata = {
+          category: sendDate.category,
+          subCategory: sendDate.subCategory,
+          limit: sendDate.limit,
+          page: pageNum,
+        };
+        axios
+          .post(`${Config.URL}/questions/filter`, senddata)
+          .then((res) => {
+            setBaza([...res?.data?.docs]);
+            setPageLenght(res?.data?.totalPages);
+          })
+          .catch((err) => {
+            alert("Tizimda hatolik");
+            console.log(err);
+          });
       })
       .catch((err) => {
         alert("Eror not upload");
@@ -180,10 +222,27 @@ const Testlar = () => {
     if (window.confirm("Delete Image")) {
       axios
         .delete(`${Config.URL}/questions/deleteimg/${id}`)
-        .then(() => window.location.reload())
+        .then(() => {
+          changeModal2("d-none");
+          let senddata = {
+            category: sendDate.category,
+            subCategory: sendDate.subCategory,
+            limit: sendDate.limit,
+            page: pageNum,
+          };
+          axios
+            .post(`${Config.URL}/questions/filter`, senddata)
+            .then((res) => {
+              setBaza([...res?.data?.docs]);
+              setPageLenght(res?.data?.totalPages);
+            })
+            .catch((err) => {
+              alert("Tizimda hatolik");
+              console.log(err);
+            });
+        })
         .catch((err) => {
           alert("Error not found");
-          window.location.reload();
           console.log(err);
         })
         .finally(() => {
@@ -193,34 +252,13 @@ const Testlar = () => {
       alert("Error not found");
       window.location.reload();
     }
+    changeModal3("d-none");
   };
   let paginationArray = [];
   for (let i = 1; i <= pageLenght; i++) {
     paginationArray.push(i);
   }
-  const handlePage = (num) => {
-    setLoading(true);
-    setPageNum(num);
-    let data = {
-      category: sendDate.category,
-      subCategory: sendDate.subCategory,
-      limit: sendDate.limit,
-      page: num,
-    };
-    axios
-      .post(`${Config.URL}/questions/filter`, data)
-      .then((res) => {
-        setBaza(res?.data?.docs);
-        setPageLenght(res?.data?.totalPages);
-      })
-      .catch((err) => {
-        alert("Tizimda hatolik");
-        console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+
   const handleNext = () => {
     if (pageLenght > pageNum) {
       setPageNum(pageNum + 1);
@@ -231,14 +269,16 @@ const Testlar = () => {
       setPageNum(pageNum - 1);
     }
   };
-
+  const handleClik = () => {
+    setOpenNavbar(!openNavbar);
+  };
   if (loading) {
     return (
       <div
         className="d-flex align-items-center justify-content-center"
         style={{ height: "100vh" }}
       >
-        <div class="loader"></div>
+        <div className="loader"></div>
       </div>
     );
   }
@@ -256,7 +296,7 @@ const Testlar = () => {
           <AiFillDelete className="text-danger" />
         </h1>
       </div>
-      <div className="nav mb-5 d-flex justify-content-around">
+      <div className="nav navbarItem mb-5 flex-column flex-md-row align-items-start gap-md-0  gap-3 justify-content-md-around justify-content-center ms-md-0 ms-5">
         <div
           className="menu_item btn btn-primary"
           onClick={() => navigate("/category")}
@@ -282,6 +322,39 @@ const Testlar = () => {
           Habar jo'natish
         </div>
       </div>
+      <div className="d-md-none align-items-center d-flex justify-content-center mb-3 my">
+        <div
+          style={{ height: openNavbar ? "200px" : "50px", transition: "0.5s" }}
+          className="bg-white overflow-hidden rounded-2 w-75 border border-secondary px-4"
+        >
+          <div className="d-flex align-items-center justify-content-between w-100">
+            <h2
+              className="pt-2 text-info"
+              onClick={() => {
+                navigate("/test");
+                setOpenNavbar(false);
+              }}
+            >
+              Testlar
+            </h2>
+            <button
+              className="bg-white border border-0"
+              onClick={() => handleClik()}
+            >
+              <CgMenu size={24} className=" text-info" />
+            </button>
+          </div>
+          <h2 className=" text-info" onClick={() => navigate("/category")}>
+            Bo'limlar
+          </h2>
+          <h2 className="mt-3 text-info" onClick={() => navigate("/user")}>
+            Foydalanuvchi
+          </h2>
+          <h2 className="mt-3 text-info" onClick={() => navigate("/message")}>
+            Habar jo'natish
+          </h2>
+        </div>
+      </div>
       <div
         className="ico text-end my-3"
         onClick={() =>
@@ -291,7 +364,10 @@ const Testlar = () => {
         <HiOutlineDocumentAdd className="text-primary" />
       </div>
       <div className="questions_search">
-        <form onSubmit={sendBack} className="d-flex justify-content-around">
+        <form
+          onSubmit={sendBack}
+          className="d-flex justify-content-md-around align-items-center flex-column flex-md-row  gap-md-0  gap-3"
+        >
           <select
             name="category"
             value={sendDate.category}
