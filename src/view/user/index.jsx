@@ -1,3 +1,4 @@
+import { CgMenu } from "react-icons/cg";
 import axios from "axios";
 import { useState } from "react";
 import Config from "../../condig";
@@ -24,6 +25,7 @@ const User = () => {
     page: pageNum,
   });
   const [user, setUser] = useState([]);
+  const [openNavbar, setOpenNavbar] = useState(false);
 
   const changeHandler = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -121,19 +123,22 @@ const User = () => {
   const changeModal = (stle) => {
     setOpenModal(stle);
   };
+  const handleClik = () => {
+    setOpenNavbar(!openNavbar);
+  };
   if (loading) {
     return (
       <div
         className="d-flex align-items-center justify-content-center"
         style={{ height: "100vh" }}
       >
-        <div class="loader"></div>
+        <div className="loader"></div>
       </div>
     );
   }
   return (
     <div className="my-5">
-      <div className="nav mb-5 d-flex justify-content-around">
+      <div className="nav navbarItem mb-5 flex-column flex-md-row align-items-start gap-md-0  gap-3 justify-content-md-around justify-content-center ms-md-0 ms-5">
         <div
           className="menu_item btn btn-primary"
           onClick={() => navigate("/category")}
@@ -159,12 +164,45 @@ const User = () => {
           Habar jo'natish
         </div>
       </div>
+      <div className="d-md-none align-items-center d-flex justify-content-center mb-3 my">
+        <div
+          style={{ height: openNavbar ? "200px" : "50px", transition: "0.5s" }}
+          className="bg-white overflow-hidden rounded-2 w-75 border border-secondary px-4"
+        >
+          <div className="d-flex align-items-center justify-content-between w-100">
+            <h2
+              className="pt-2 text-info"
+              onClick={() => {
+                navigate("/user");
+                setOpenNavbar(false);
+              }}
+            >
+              Foydalanuvchi
+            </h2>
+            <button
+              className="bg-white border border-0"
+              onClick={() => handleClik()}
+            >
+              <CgMenu size={24} className="text-info"/>
+            </button>
+          </div>
+          <h2 className=" text-info" onClick={() => navigate("/category")}>
+            Bo'limlar
+          </h2>
+          <h2 className="mt-3 text-info" onClick={() => navigate("/test")}>
+            Testlar
+          </h2>
+          <h2 className="mt-3 text-info" onClick={() => navigate("/message")}>
+            Habar jo'natish
+          </h2>
+        </div>
+      </div>
       <div className="user_search">
         <h1>Foydalanuvchilarni qidirish</h1>
         <div className="search_item">
           <form
             onSubmit={SearchFunction}
-            className="d-flex justify-content-center"
+            className="d-flex flex-column flex-md-row align-items-center justify-content-center"
           >
             <input
               className="form-control m-3 w-50"
@@ -222,15 +260,18 @@ const User = () => {
       ) : (
         <></>
       )}
-      <div className="user row d-flex mx-2 gap-3 justify-content-center">
+      <div className="user row rowGap">
         {user.length !== 0 ? (
-          <h1 className="ps-5">Foydalanuvchilar soni : {docs}</h1>
+          <h1 className="ps-2 ps-md-5">Foydalanuvchilar soni : {docs}</h1>
         ) : (
           ""
         )}
         {user.map((item, index) => {
           return (
-            <div className="border rounded cardW p-4 col-md-3" key={index}>
+            <div
+              className="border rounded cardW p-4 col-12 col-sm-6 col-md-4 col-lg-3"
+              key={index}
+            >
               <h5>
                 F.I.SH : <b>{item.username}</b>
               </h5>
@@ -305,74 +346,13 @@ const User = () => {
           />
           <button
             type="button"
-            className="btn ms-3 btn-primary"
+            className="btn mt-md-0 mt-2 ms-3 btn-primary"
             onClick={() => handleTahrirlash(modalData)}
           >
             Tahrirlash
           </button>
         </div>
       </div>
-      {/* <div
-        className="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="exampleModalLabel">
-                F.I.SH : <b>{modalData?.username}</b>
-              </h1>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
-              <h5>
-                Telefon raqami : <b>{modalData?.phone}</b>
-              </h5>
-              <h5>
-                Manzil : <b>{modalData?.address}</b>
-              </h5>
-              <div className="form-check form-switch">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="flexSwitchCheckChecked"
-                  checked={modalData.payment}
-                  // {item.payment?"checked":""}
-                />
-                <label
-                  className="form-check-label"
-                  for="flexSwitchCheckChecked"
-                >
-                  Botdan foydalanish ruxsati
-                </label>
-              </div>
-              <DatePicker
-                selected={startDate}
-                onChange={(date) => handleData(date)}
-              />
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                className="btn btn-primary"
-                onClick={() => handleTahrirlash(modalData)}
-              >
-                Tahrirlash
-              </button>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };
