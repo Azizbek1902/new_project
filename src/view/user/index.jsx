@@ -16,6 +16,7 @@ const User = () => {
   const [momentDate, setMomentDate] = useState(moment(new Date()));
   const [modalData, setModalData] = useState({});
   const [startDate, setStartDate] = useState(new Date());
+  const [activValue, setActivValue] = useState("all");
   const [docs, setDocs] = useState(0);
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState("d-none");
@@ -126,6 +127,42 @@ const User = () => {
   const handleClik = () => {
     setOpenNavbar(!openNavbar);
   };
+  const handleCHange = (e) => {
+    setActivValue(e.target.value);
+    // setLoading(true);
+    let newValue = e.target.value;
+    if (newValue === "all") {
+      newValue = "";
+    } else if (newValue === "0") {
+      newValue = true;
+    } else {
+      newValue = false;
+    }
+    let sendData = {
+      limit: 20,
+      page: pageNum,
+      active: newValue,
+    };
+    console.log(sendData, "data");
+    axios
+      .post(`${Config.URL}/users/phone`, sendData)
+      .then((res) => {
+        if (res.data.length !== 0) {
+          console.log(res.data.docs, "dddddddddddddd");
+          setUser(res?.data?.docs);
+          setDocs(res?.data?.totalDocs);
+          setPageLenght(res?.data?.totalPages);
+        } else {
+          alert("Bunday foydalanuvchi topilmadi");
+        }
+      })
+      .catch((err) => {
+        alert("Tizimda hatolik");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
   if (loading) {
     return (
       <div
@@ -183,7 +220,7 @@ const User = () => {
               className="bg-white border border-0"
               onClick={() => handleClik()}
             >
-              <CgMenu size={24} className="text-info"/>
+              <CgMenu size={24} className="text-info" />
             </button>
           </div>
           <h2 className=" text-info" onClick={() => navigate("/category")}>
@@ -214,6 +251,20 @@ const User = () => {
             />
             <button className="btn m-3 btn-primary">Search</button>
           </form>
+        </div>
+      </div>
+      <div className="d-flex justify-content-center my-3">
+        <div className="d">
+          <select
+            class="form-select"
+            value={activValue}
+            onChange={handleCHange}
+            aria-label="Default select example"
+          >
+            <option value="all">Hamma foydalanuvchilar</option>
+            <option value="0">Aktiv foydalanuvchilar ✅</option>
+            <option value="1">Aktivmas foydalanuvchilar ❌</option>
+          </select>
         </div>
       </div>
       {pageLenght >= 2 ? (
